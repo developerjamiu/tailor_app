@@ -1,9 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:jaynetwork/network/dio_client.dart';
+import 'package:tailor_app/utils/helper/pref_manage.dart';
 import 'package:toast/toast.dart';
 //
 final JayNetworkClient networkClient =
-JayNetworkClient('http://app.messerand.com/api/auth/');
+JayNetworkClient('https://sizary.app/api/auth/');
+
+final SharedPreferencesHelper preferencesHelper = SharedPreferencesHelper();
 
 void showToast(BuildContext context,
     {@required String message, int gravity = 0}) {

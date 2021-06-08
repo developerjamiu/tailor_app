@@ -1,70 +1,42 @@
-
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
-import 'package:http/http.dart';
-import 'package:tailor_app/sign_in_screen/model.dart';
-import 'package:tailor_app/utils/app_url.dart';
-import 'package:tailor_app/utils/user_preferences.dart';
+import 'package:jaynetwork/network/network_exceptions.dart';
+import 'package:tailor_app/instance_helper/instances.dart';
+import 'package:tailor_app/sign_in_screen/repo.dart';
+import 'package:tailor_app/utils/page_route/navigator.dart';
 
-enum Status {
-  NotLoggedIn,
-  NotRegistered,
-  LoggedIn,
-  Registered,
-  Authenticating,
-  Registering,
-  LoggedOut
-}
+LoginApiRepository _repository = LoginApiRepository();
 
-class SignInProvider extends ChangeNotifier{
+class SignInProvider extends ChangeNotifier {
+  BuildContext _context;
+  String userToken;
+  String errorMsg='Login Failed';
 
-  Status _loggedInStatus = Status.NotLoggedIn;
-  Status _registeredInStatus = Status.NotRegistered;
+  void initialize(BuildContext context) {
+    this._context = context;
+  }
 
-  Status get loggedInStatus => _loggedInStatus;
-  Status get registeredInStatus => _registeredInStatus;
-
-  Future<Map<String, dynamic>> login(String email, String password) async {
-    var result;
-
-    final Map<String, dynamic> loginData = {
-        'email': email,
-        'password': password
-    };
-
-    _loggedInStatus = Status.Authenticating;
-    notifyListeners();
-    print('lkfcfgcvbjhgfcv');
-    Response response = await post(
-      AppUrl.login,
-      body: json.encode(loginData),
-      headers: {'Content-Type': 'application/json'},
-    );
-
-    if (response.statusCode == 200) {
-      final Map<String, dynamic> responseData = json.decode(response.body);
-
-      var userData = responseData['user'];
-
-      LoginModel authUser = LoginModel.fromJson(userData);
-
-      UserPreferences().saveLoginUser(authUser);
-
-      _loggedInStatus = Status.LoggedIn;
-      notifyListeners();
-
-      result = {
-        'status': true,
-        'user': authUser};
-    } else {
-      _loggedInStatus = Status.NotLoggedIn;
-      notifyListeners();
-      result = {
-        'status': false,
-      };
+  void loginUser({String email,String password}) async {
+    try {
+      print('whatever');
+      final _response = await _repository.loginUser(email: email,password: password);
+      print('printing ${_response.toString()}');
+      _response.when(success: (success, _, statusMessage) async {
+        print('whatever again');
+        showToast(this._context, message: 'Login Successful.');
+        PageRouter.gotoNamed(Routes.DASHBOARD, _context);
+        notifyListeners();
+      }, failure: (NetworkExceptions error, _, statusMessage) async {
+        print('oshodu');
+        errorMsg=error.toString();
+        notifyListeners();
+        showToast(
+            this._context, message: error.toString());
+        notifyListeners();
+      });
+    } catch (e) {
+      // print(e.toString());
+      showToast(_context, message: errorMsg);
     }
-    return result;
   }
 }
 

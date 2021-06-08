@@ -4,35 +4,43 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:pin_entry_text_field/pin_entry_text_field.dart';
 import 'package:provider/provider.dart';
+import 'package:tailor_app/instance_helper/instances.dart';
+import 'package:tailor_app/otp/provider.dart';
 import 'package:tailor_app/utils/colors.dart';
 import 'package:tailor_app/utils/helper/constants.dart';
 import 'package:tailor_app/utils/helper/timer_helper.dart';
 import 'package:tailor_app/utils/page_route/navigator.dart';
 import 'package:tailor_app/widget/text_view_widget.dart';
 
-class OtpPage extends StatefulWidget {
-  final String email;
-  final String userID;
+import 'model.dart';
 
-  OtpPage({@required this.email, @required this.userID});
+class OtpPage extends StatefulWidget {
 
   @override
   _OtpPageState createState() => _OtpPageState();
 }
 
 class _OtpPageState extends State<OtpPage> {
-  // OtpProviders _otpProviders;
+  OtpProviders _otpProviders;
   UtilityProvider _utilityProvider;
 
   String pin;
+  String token;
+  String ref;
 
   @override
   void initState() {
-    // _otpProviders = Provider.of<OtpProviders>(context, listen: false);
-    // _otpProviders.init(context);
+    _otpProviders = Provider.of<OtpProviders>(context, listen: false);
+    _otpProviders.init(context);
     _utilityProvider = Provider.of<UtilityProvider>(context, listen: false);
     _utilityProvider.startTimer(timeLimit: 4);
+    init();
     super.initState();
+  }
+
+  init()async{
+    ref = constantRef;
+    token = await preferencesHelper.getStringValues(key: 'token');
   }
 
   @override
@@ -70,20 +78,6 @@ class _OtpPageState extends State<OtpPage> {
                   SizedBox(
                     height: 30,
                   ),
-                  // Container(
-                  //   height: 100,
-                  //   width: 100,
-                  //   decoration: BoxDecoration(
-                  //       shape: BoxShape.circle, color: Color(0xffD6EFFF)),
-                  //   child: Padding(
-                  //     padding: const EdgeInsets.only(top: 20.0),
-                  //     child: ImageLoader(
-                  //       path: AppAssets.otpIcon,
-                  //       width: 120,
-                  //       height: 106,
-                  //     ),
-                  //   ),
-                  // ),
                   SizedBox(
                     height: 30,
                   ),
@@ -114,7 +108,7 @@ class _OtpPageState extends State<OtpPage> {
                   PinEntryTextField(
                     showFieldAsBox: false,
                     isTextObscure: false,
-                    fields: 6,
+                    fields: 5,
                     onSubmit: (String pin) =>
                         _submitOtp(pin, util), // end onSubmit
                   ),
@@ -136,10 +130,11 @@ class _OtpPageState extends State<OtpPage> {
                             recognizer: TapGestureRecognizer()
                               ..onTap = () => util.timerIsNotExpired
                                   ? null
-                                  : null,
-                              // _otpProviders.resendOtp(
-                              //     map: OtpModel.toJson(
-                              //         otp: int.parse(pin), email: email)),
+                                  :
+                              _otpProviders.resendOtp(
+                                _utilityProvider,
+                                  map: OtpModel.otpToJson(
+                                      otp: int.parse(pin), ref: ref), token: token,),
                             text: util.timerIsNotExpired
                                 ? '0${util.minute} : ${util.seconds.toString().length == 1 ? '0${util.seconds}' : util.seconds}'
                                 : 'Resend OTP',
@@ -164,16 +159,17 @@ class _OtpPageState extends State<OtpPage> {
     );
   }
 
-  void _submitOtp(
+  Future<void> _submitOtp(
       String pin,
       UtilityProvider util,
-      ) {
+      ) async {
     if (util.timerIsNotExpired) {
-      setState(() => userId = widget.userID);
-      // _otpProviders.verifyOtp(
-      //     map: OtpModel.toJson(otp: int.parse(pin), email: email));
+      _otpProviders.verifyOtp(
+          map: OtpModel.otpToJson(otp: int.parse(pin), ref: ref), token: token);
     }else{
-      // _otpProviders.resendOtp(map: OtpModel.resendOtpToJson(email: email, otp: int.parse(pin)));
+      _otpProviders.resendOtp(
+          _utilityProvider,
+          map: OtpModel.otpToJson(ref:ref, otp: int.parse(pin)), token: token);
     }
   }
 }

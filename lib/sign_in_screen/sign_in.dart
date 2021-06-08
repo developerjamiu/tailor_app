@@ -31,9 +31,16 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   void initState() {
     signInProvider = Provider.of<SignInProvider>(context, listen:false);
+    signInProvider.initialize(context);
     super.initState();
   }
 
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   bool _validateInput(){
     if (emailController.text.isEmpty ||
@@ -50,22 +57,11 @@ class _SignInScreenState extends State<SignInScreen> {
     return true;
   }
 
-  doLogin() {
+  void signIn() {
     if (_validateInput())
-      signInProvider.login(emailController.text,passwordController.text).then((response) {
-        if (response['user']!=null) {
-          LoginModel user = response['user'];
-          Provider.of<UserLoginProvider>(context, listen: false).setLoginUser(user);
-          Navigator.of(context).pushReplacementNamed(Routes.DASHBOARD);
-          print('no too shout${user.user.users.firstname}');
-        } else {
-          Flushbar(
-            title: "Failed Login",
-            message: 'Invalid detail',
-            duration: Duration(seconds: 5),
-          ).show(context);
-        }
-      });
+      signInProvider.loginUser(
+          email: emailController.text,
+          password: passwordController.text);
   }
 
   @override
@@ -117,7 +113,8 @@ class _SignInScreenState extends State<SignInScreen> {
                 child: ElevatedButton(
                   onPressed: (){
                     print('you press meee');
-                    doLogin();},
+                      signIn();
+                    },
                   style: TextButton
                       .styleFrom(
                     backgroundColor:

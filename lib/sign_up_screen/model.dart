@@ -12,24 +12,22 @@ class SignUpModel {
     this.password,this.phone});
 
   SignUpModel.fromJson(Map<String, dynamic> json) {
-    message = json['message']!= null ? json['message'] : null;
-    firstName = json['firstname']!= null ? json['firstname'] : null;
-    lastName = json['lastname']!= null ? json['lastname'] : null;
-    email = json['email']!= null ? json['email'] : null;
-    country = json['country']!= null ? json['country'] : null;
-    accountType = json['type']!= null ? json['type'] : null;
-    password = json['password']!= null ? json['password'] : null;
-    phone = json['phone']!= null ? json['phone'] : null;
-    cPassword = json['cpass']!= null ? json['cpass'] : null;
-    user = json['user'] != null ? json['user'] : null;
+    message = json['message'];
+    firstName = json['firstname'];
+    lastName = json['lastname'];
+    email = json['email'];
+    country = json['country'];
+    accountType = json['type'];
+    phone = json['phone'];
+    user = json['user'] != null ? new User.fromJson(json['user']) : null;
   }
 
-  static Map<String, dynamic> toJson(
-      {User user,String message,String phone,
+   static Map<String, dynamic> toJson(
+      {String phone,
         String country,String accountType,String firstName,String lastName,
-        String email, String password,String cPassword,}) {
+        String email, String password,String cPassword}) {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['message'] = message;
+
     data['firstname'] = firstName;
     data['lastname'] = lastName;
     data['phone'] = phone;
@@ -38,9 +36,9 @@ class SignUpModel {
     data['email'] = email;
     data['password'] = password;
     data['cpass'] = cPassword;
-    if (user != null) {
-      data['user'] = user.toJson();
-    }
+    // if (user != null) {
+    //   data['user'] = user.toJson();
+    // }
     return data;
   }
 }
@@ -53,9 +51,9 @@ class User {
   User({this.accessToken, this.tokenType, this.expiresIn});
 
   User.fromJson(Map<String, dynamic> json) {
-    accessToken = json['access_token']!= null ? json['access_token'] : null;
-    tokenType = json['token_type']!= null ? json['token_type'] : null;
-    expiresIn = json['expires_in']!= null ? json['expires_in'] : null;
+    accessToken = json['access_token'];
+    tokenType = json['token_type'];
+    expiresIn = json['expires_in'];
   }
 
   Map<String, dynamic> toJson() {

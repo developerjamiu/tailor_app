@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:tailor_app/complete_tailor_verification/complete_tailor_screen.dart';
 import 'package:tailor_app/tailor_category/tailor_category_screen.dart';
 
 BuildContext globalContext;
@@ -6,7 +7,7 @@ bool hasOpenedLogOutDialog = false;
 
 class Routes {
   static const String DASHBOARD = '/dashboard';
-  // static const String OTP_SUCCESSFUL = '/otpSuccessful';
+  static const String TAILOR_OTP_SUCCESSFUL = '/tailorOtpSuccessful';
   // static const String LOGIN = '/login';
   // static const String SIGNUP = '/signup';
   // static const String PLAYLIST = '/playlist';
@@ -18,6 +19,10 @@ class Routes {
         DASHBOARD: (BuildContext context) {
           globalContext = context;
           return TailorCategory();
+        },
+        TAILOR_OTP_SUCCESSFUL: (BuildContext context) {
+          globalContext = context;
+          return CompleteTailorScreen();
         },
         // PLAYLIST: (BuildContext context) {
         //   globalContext = context;

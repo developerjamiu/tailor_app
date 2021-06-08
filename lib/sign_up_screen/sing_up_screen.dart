@@ -1,13 +1,11 @@
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tailor_app/instance_helper/instances.dart';
 import 'package:tailor_app/sign_up_screen/provider.dart';
 import 'package:tailor_app/utils/colors.dart';
+import 'package:tailor_app/utils/helper/constants.dart';
 import 'package:tailor_app/utils/helper/helper.dart';
-import 'package:tailor_app/utils/page_route/route.dart';
-import 'package:tailor_app/utils/user_provider.dart';
 import 'package:tailor_app/widget/text_field_editing_widget.dart';
 import 'package:tailor_app/widget/text_view_widget.dart';
 
@@ -33,12 +31,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   String accountTypeValue;
   String countryValue;
-  List accountType = ['Tailor','Client'];
   List country = countries;
 
   bool _isFirstName = false;
   bool _isLastName = false;
-  bool _isEmail = false;
+  bool _isEmail = false;  List accountType = ['tailor','client'];
+
   bool _isPhone = false;
   bool _isPassword = false;
   bool _isConfirmPassword = false;
@@ -89,53 +87,59 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return true;
   }
 
-  // void _signUpUser() {
-  //   FocusScope.of(context).unfocus();
-  //
-  //   if (!_validateInputs()) return;
-  //
-  //   email = emailController.text;
-  //   password = passwordController.text;
-  //   phone = phoneController.text;
-  //   account_type = accountTypeValue;
-  //   signUpProviders.register(
-  //       emailController.text,
-  //       passwordController.text,
-  //       confirmPasswordController.text,
-  //       firstNameController.text, lastNameController.text,
-  //       countryValue, accountTypeValue, phoneController.text);
-  //   setState(() {});
-  // }
+  void _signUpUser() {
+    FocusScope.of(context).unfocus();
+
+    if (!_validateInputs()) return;
+
+    email = emailController.text;
+    password = passwordController.text;
+    phone = phoneController.text;
+    account_type = accountTypeValue;
+    signUpProviders.signUp(
+        map: SignUpModel.toJson(
+            email:emailController.text.trim(),
+            password:passwordController.text.trim(),
+            cPassword:confirmPasswordController.text.trim(),
+            firstName:firstNameController.text.trim(),
+            lastName:lastNameController.text.trim(),
+            country:countryValue,
+            accountType:accountTypeValue,
+            phone:phoneController.text.trim()
+        ));
+    setState(() {});
+  }
 
   @override
   void initState() {
     signUpProviders = Provider.of<SignUpProviders>(context, listen: false);
+    signUpProviders.init(context);
     super.initState();
   }
 
-  doRegister() {
-    if (!_validateInputs()) return;
-      signUpProviders.register(emailController.text,
-          passwordController.text,
-          confirmPasswordController.text,
-          firstNameController.text, lastNameController.text,
-          countryValue, accountTypeValue, phoneController.text).then((response) {
-        if (response != null) {
-          SignUpModel user = response[''];
-          Provider.of<UserSignUpProvider>(context, listen: false).setSignUpUser(user);
-        Navigator.of(context).pushReplacementNamed(Routes.DASHBOARD);
-          print("printing token:${user.firstName}");
-
-        } else {
-          Flushbar(
-            title: "Registration Failed",
-            message: response.toString(),
-            duration: Duration(seconds: 10),
-          ).show(context);
-        }
-      });
-
-  }
+  // doRegister() {
+  //   if (!_validateInputs()) return;
+  //     signUpProviders.register(emailController.text,
+  //         passwordController.text,
+  //         confirmPasswordController.text,
+  //         firstNameController.text, lastNameController.text,
+  //         countryValue, accountTypeValue, phoneController.text).then((response) {
+  //       if (response != null) {
+  //         SignUpModel user = response[''];
+  //         Provider.of<UserSignUpProvider>(context, listen: false).setSignUpUser(user);
+  //       Navigator.of(context).pushReplacementNamed(Routes.DASHBOARD);
+  //         print("printing token:${signUpProviders.chill}");
+  //
+  //       } else {
+  //         Flushbar(
+  //           title: "Registration Failed",
+  //           message: 'failed',
+  //           duration: Duration(seconds: 10),
+  //         ).show(context);
+  //       }
+  //     });
+  //
+  // }
 
 
   @override
@@ -276,7 +280,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 child: ElevatedButton(
                   onPressed: (){
                     print('you press meee');
-                    doRegister();},
+                    _signUpUser();},
                   style: TextButton
                       .styleFrom(
                     backgroundColor:
