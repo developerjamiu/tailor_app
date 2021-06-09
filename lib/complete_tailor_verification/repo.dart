@@ -6,7 +6,6 @@ import 'package:tailor_app/complete_tailor_verification/model.dart';
 import 'package:tailor_app/error_handler/handler.dart';
 import 'package:tailor_app/instance_helper/instances.dart';
 import 'package:dio/dio.dart';
-import 'dart:io';
 import 'package:http/http.dart' as http;
 
 class CompleteTailorRepo {
