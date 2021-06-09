@@ -1,3 +1,5 @@
+import 'package:dio/dio.dart';
+
 import 'package:flutter/cupertino.dart';
 import 'package:jaynetwork/network/network_exceptions.dart';
 import 'package:tailor_app/complete_tailor_verification/repo.dart';
@@ -7,29 +9,28 @@ import 'package:tailor_app/utils/page_route/route.dart';
 import 'package:tailor_app/widget/progress.dart';
 import 'dart:io';
 
-
 CompleteTailorRepo _completeTailorRepo = CompleteTailorRepo();
 
-class CompleteTailorAccountProvider extends ChangeNotifier{
-
+class CompleteTailorAccountProvider extends ChangeNotifier {
   BuildContext _context;
   CustomProgressIndicator _progressIndicator;
   String queryToken;
 
-  void init(BuildContext context){
+  void init(BuildContext context) {
     this._context = context;
     this._progressIndicator = CustomProgressIndicator(this._context);
   }
 
-
-  void verifyTailorAccount({@required Map map,@required token})async{
-    try{
-      print('print me inside tailor gang $token');
+  void verifyTailorAccount({@required FormData map,String token}) async {
+    try {
+      // print('print me inside tailor gang $token');
       print('print me inside tailor gang $map');
       _progressIndicator.show();
 
       final _response = await _completeTailorRepo.completeTailorAccount(
           queryToken: token,map: map);
+      // final _response =
+      //     await _completeTailorRepo.completeTailorVerification(map: map);
       print('print me with response $_response');
       print('print me with response ${_response.statusMessage}');
       print('print me with response ${_response.statusCode}');
@@ -51,8 +52,7 @@ class CompleteTailorAccountProvider extends ChangeNotifier{
       await _progressIndicator.dismiss();
       notifyListeners();
       print('print catch error here');
-      showToast(this._context,
-          message: 'Failed.. Please try again');
+      showToast(this._context, message: 'Failed.. Please try again');
     }
   }
 }

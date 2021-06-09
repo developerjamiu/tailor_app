@@ -13,8 +13,6 @@ import 'package:tailor_app/widget/text_view_widget.dart';
 
 import 'model.dart';
 
-
-
 class CompleteTailorScreen extends StatefulWidget {
   const CompleteTailorScreen({Key key}) : super(key: key);
 
@@ -23,7 +21,6 @@ class CompleteTailorScreen extends StatefulWidget {
 }
 
 class _CompleteTailorScreenState extends State<CompleteTailorScreen> {
-
   CompleteTailorAccountProvider completeTailorAccountProvider;
   CompleteTailorRepo completeTailorRepo;
 
@@ -74,18 +71,18 @@ class _CompleteTailorScreenState extends State<CompleteTailorScreen> {
       return false;
     }
 
-    if(stateController.text.isEmpty){
-      setState(()=> _isState = true);
+    if (stateController.text.isEmpty) {
+      setState(() => _isState = true);
       return false;
     }
 
-    if(tagController.text.isEmpty){
-      setState(()=> _isTag = true);
+    if (tagController.text.isEmpty) {
+      setState(() => _isTag = true);
       return false;
     }
 
-    if(fabricController.text.isEmpty){
-      setState(()=> _isFabric = true);
+    if (fabricController.text.isEmpty) {
+      setState(() => _isFabric = true);
       return false;
     }
 
@@ -103,35 +100,39 @@ class _CompleteTailorScreenState extends State<CompleteTailorScreen> {
 
   @override
   void initState() {
-    completeTailorAccountProvider = Provider.of<CompleteTailorAccountProvider>(context, listen: false);
+    completeTailorAccountProvider =
+        Provider.of<CompleteTailorAccountProvider>(context, listen: false);
     completeTailorAccountProvider.init(context);
     init();
     super.initState();
   }
 
-  init()async{
+  init() async {
     token = await preferencesHelper.getStringValues(key: 'token');
   }
 
-  void completeAccount() {
+  void completeAccount()async{
     FocusScope.of(context).unfocus();
-    if (_validateInputs())
-    completeTailorAccountProvider.verifyTailorAccount(
-        map: CompleteTailorModel.completeToJson(
-            shopName: shopNameController.text,
-            cac: contactAddressController.text,
-            shopAddress: shopAddressController.text,
-            phone: phoneController.text,
-            state: stateController.text,
-            tags: ['"${tagController.text}"','"${tagController.text}"'],
-            address: addressController.text,
-            fabrics: fabricController.text,
-            file: imageFile),
+    if (_validateInputs()){
+      var map = await CompleteTailorModel.updateStoreImage(
+          shopName: shopNameController.text,
+          cac: contactAddressController.text,
+          shopAddress: shopAddressController.text,
+          phone: phoneController.text,
+          state: stateController.text,
+          tags: ['"${tagController.text}"', '"${tagController.text}"'],
+          address: addressController.text,
+          fabrics: fabricController.text,
+          logo: imageFile,
+          token: token);
+      completeTailorAccountProvider.verifyTailorAccount(
+        map: map,
         token: token
-    );
+      );
+    }
+
     setState(() {});
   }
-
 
   @override
   void dispose() {
@@ -149,139 +150,155 @@ class _CompleteTailorScreenState extends State<CompleteTailorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body:SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.only(left: 16,right: 16,),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 40,),
-                TextViewWidget(
-                  text: 'Complete Tailor Account',
-                  textSize: 30,
-                  color: AppColor.black,
-                  fontWeight: FontWeight.w600,),
-                SizedBox(height: 30),
-                EditTextWidget(
-                  err: 'please enter shop name',
-                  label: 'Shop Name',
-                  textInputType: TextInputType.text,
-                  controller: shopNameController,
-                  isValidationError: _isShopName,
-                  textCallBack: (_) => setState(() => _isShopName = false),),
-                EditTextWidget(
-                  err:'please enter contact address',
-                  label: 'Contact Address',
-                  textInputType: TextInputType.text,
-                  controller: contactAddressController,
-                  isValidationError: _isContactAddress,
-                  textCallBack: (_) => setState(() => _isContactAddress = false),),
-                EditTextWidget(
-                  err: 'please enter shop address',
-                  label: 'Shop Address',
-                  textInputType: TextInputType.text,
-                  controller: shopAddressController,
-                  isValidationError: _isShopAddress,
-                  textCallBack: (_) => setState(() => _isShopAddress = false),),
-                EditTextWidget(
-                  err: 'please enter phone number',
-                  label: 'Phone Number',
-                  textInputType: TextInputType.number,
-                  controller: phoneController,
-                  isValidationError: _isPhone,
-                  textCallBack: (_) => setState(() => _isPhone = false),),
-                EditTextWidget(
-                  err: 'please enter state',
-                  label: 'State',
-                  textInputType: TextInputType.text,
-                  controller: stateController,
-                  isValidationError: _isState,
-                  textCallBack: (_) => setState(() => _isState = false),),
-                EditTextWidget(
-                  err: 'please enter tag',
-                  label: 'Tags',
-                  textInputType: TextInputType.text,
-                  controller: tagController,
-                  isValidationError: _isTag,
-                  textCallBack: (_) => setState(() => _isTag= false),),
-                EditTextWidget(
-                  err: 'please enter Address',
-                  label: 'Address',
-                  textInputType: TextInputType.text,
-                  controller: addressController,
-                  isValidationError: _isAddress,
-                  textCallBack: (_) => setState(() => _isAddress= false),),
-                EditTextWidget(
-                  err: 'please enter fabric',
-                  label: 'Fabrics',
-                  textInputType: TextInputType.text,
-                  controller:fabricController,
-                  isValidationError: _isFabric,
-                  textCallBack: (_) => setState(() => _isFabric= false),),
-                Padding(
-                  padding: EdgeInsets.only(left: 26,right: 16,top: 15),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      InkWell(
-                        onTap: ()async{
-                          await _showDialog(context);},
-                        child: TextViewWidget(
-                            text: 'logo',
-                            fontWeight: FontWeight.w500,
-                            color: AppColor.black,
-                            textSize: 20,),
-                      ),
-                      SizedBox(width: 50,),
-                      Expanded(
-                        child: TextViewWidget(
-                          text: imageString==null?"":'$imageString',
-                          color: AppColor.black,
-                          fontWeight: FontWeight.w400,
-                          textSize: 18,)
-                      )
-
-                    ],
-                  ),
-                ),
-                SizedBox(height: 15,),
-                Center(
-                  child: ElevatedButton(
-                    onPressed: (){
-                      print('you press meee');
-                      completeAccount();},
-                    style: TextButton
-                        .styleFrom(
-                      backgroundColor:
-                      AppColor.purple,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: TextViewWidget(
-                        text: 'Complete Account',
-                        color: AppColor.white,
-                        textSize: 20,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                ),
-
-              ],
+        body: SingleChildScrollView(
+      child: Padding(
+        padding: const EdgeInsets.only(
+          left: 16,
+          right: 16,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(
+              height: 40,
             ),
-          ),
-        )
-    );
+            TextViewWidget(
+              text: 'Complete Tailor Account',
+              textSize: 30,
+              color: AppColor.black,
+              fontWeight: FontWeight.w600,
+            ),
+            SizedBox(height: 30),
+            EditTextWidget(
+              err: 'please enter shop name',
+              label: 'Shop Name',
+              textInputType: TextInputType.text,
+              controller: shopNameController,
+              isValidationError: _isShopName,
+              textCallBack: (_) => setState(() => _isShopName = false),
+            ),
+            EditTextWidget(
+              err: 'please enter contact address',
+              label: 'Contact Address',
+              textInputType: TextInputType.text,
+              controller: contactAddressController,
+              isValidationError: _isContactAddress,
+              textCallBack: (_) => setState(() => _isContactAddress = false),
+            ),
+            EditTextWidget(
+              err: 'please enter shop address',
+              label: 'Shop Address',
+              textInputType: TextInputType.text,
+              controller: shopAddressController,
+              isValidationError: _isShopAddress,
+              textCallBack: (_) => setState(() => _isShopAddress = false),
+            ),
+            EditTextWidget(
+              err: 'please enter phone number',
+              label: 'Phone Number',
+              textInputType: TextInputType.number,
+              controller: phoneController,
+              isValidationError: _isPhone,
+              textCallBack: (_) => setState(() => _isPhone = false),
+            ),
+            EditTextWidget(
+              err: 'please enter state',
+              label: 'State',
+              textInputType: TextInputType.text,
+              controller: stateController,
+              isValidationError: _isState,
+              textCallBack: (_) => setState(() => _isState = false),
+            ),
+            EditTextWidget(
+              err: 'please enter tag',
+              label: 'Tags',
+              textInputType: TextInputType.text,
+              controller: tagController,
+              isValidationError: _isTag,
+              textCallBack: (_) => setState(() => _isTag = false),
+            ),
+            EditTextWidget(
+              err: 'please enter Address',
+              label: 'Address',
+              textInputType: TextInputType.text,
+              controller: addressController,
+              isValidationError: _isAddress,
+              textCallBack: (_) => setState(() => _isAddress = false),
+            ),
+            EditTextWidget(
+              err: 'please enter fabric',
+              label: 'Fabrics',
+              textInputType: TextInputType.text,
+              controller: fabricController,
+              isValidationError: _isFabric,
+              textCallBack: (_) => setState(() => _isFabric = false),
+            ),
+            Padding(
+              padding: EdgeInsets.only(left: 26, right: 16, top: 15),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  InkWell(
+                    onTap: () async {
+                      await _showDialog(context);
+                    },
+                    child: TextViewWidget(
+                      text: 'logo',
+                      fontWeight: FontWeight.w500,
+                      color: AppColor.black,
+                      textSize: 20,
+                    ),
+                  ),
+                  SizedBox(
+                    width: 50,
+                  ),
+                  Expanded(
+                      child: TextViewWidget(
+                    text: imageString == null ? "" : '$imageString',
+                    color: AppColor.black,
+                    fontWeight: FontWeight.w400,
+                    textSize: 18,
+                  ))
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Center(
+              child: ElevatedButton(
+                onPressed: () {
+                  print('you press meee');
+                  completeAccount();
+                },
+                style: TextButton.styleFrom(
+                  backgroundColor: AppColor.purple,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: TextViewWidget(
+                    text: 'Complete Account',
+                    color: AppColor.white,
+                    textSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    ));
   }
 
   Future getImage(BuildContext context, bool isCamera) async {
     if (isCamera) {
       var picture = await ImagePicker().getImage(source: ImageSource.camera);
       if (picture != null && picture.path.isNotEmpty && picture.path != null) {
-         setState(() {
-           imageFile = File(picture.path);
-           imageString = imageFile.path.split("/").last;
-         });
+        setState(() {
+          imageFile = File(picture.path);
+          imageString = imageFile.path.split("/").last;
+        });
       }
     } else {
       var picture = await ImagePicker().getImage(source: ImageSource.gallery);
