@@ -26,6 +26,12 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+		<key>NSCameraUsageDescription</key>
+	<string>Tailor would like to use your camera to take pictures and upload</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Tailor would like to use your microphone</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Tailor would like to browse through your photo library to upload image</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
