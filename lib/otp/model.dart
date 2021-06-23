@@ -20,7 +20,8 @@ class OtpModel {
     return data;
   }
 
-  static Map<String, dynamic> otpToJson({String token,
+  static Map<String, dynamic> otpToJson({
+    String token,
     @required int otp,
     @required String ref,
   }) {

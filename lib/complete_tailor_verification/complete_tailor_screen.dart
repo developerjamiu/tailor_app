@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
-import 'package:dio/dio.dart';
 import 'package:tailor_app/complete_tailor_verification/provider.dart';
 import 'package:tailor_app/complete_tailor_verification/repo.dart';
 import 'package:tailor_app/instance_helper/instances.dart';
@@ -114,17 +113,16 @@ class _CompleteTailorScreenState extends State<CompleteTailorScreen> {
   void completeAccount()async{
     FocusScope.of(context).unfocus();
     if (_validateInputs()){
-      var map = await CompleteTailorModel.updateStoreImage(
+      var map = await CompleteTailorModel.completeToTailorMap(
           shopName: shopNameController.text,
           cac: contactAddressController.text,
           shopAddress: shopAddressController.text,
           phone: phoneController.text,
           state: stateController.text,
-          tags: ['"${tagController.text}"', '"${tagController.text}"'],
+          tags:  '["${tagController.text}","${tagController.text}"]',
           address: addressController.text,
           fabrics: fabricController.text,
-          logo: imageFile,
-          token: token);
+          logo: imageFile,);
       completeTailorAccountProvider.verifyTailorAccount(
         map: map,
         token: token

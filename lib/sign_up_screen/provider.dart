@@ -34,7 +34,7 @@ class SignUpProviders extends ChangeNotifier {
             OtpPage(),
             _context);
          String _prefToken = await preferencesHelper.getStringValues(key: 'token');
-         print('printing token: $_prefToken');
+         print('printing tokens: $_prefToken');
         notifyListeners();
       }, failure: (NetworkExceptions error, int statusCode,
           String statusMessage) async {

@@ -60,8 +60,9 @@ class _SignInScreenState extends State<SignInScreen> {
   void signIn() {
     if (_validateInput())
       signInProvider.loginUser(
-          email: emailController.text,
-          password: passwordController.text);
+          map: LoginModel.toLoginJson(
+              email: emailController.text,
+              password: passwordController.text));
   }
 
   @override

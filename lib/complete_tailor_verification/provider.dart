@@ -35,7 +35,7 @@ class CompleteTailorAccountProvider extends ChangeNotifier {
       print('print me with response ${_response.statusMessage}');
       print('print me with response ${_response.statusCode}');
       _response.when(success: (success, data, __) async {
-        _progressIndicator.dismiss();
+        await _progressIndicator.dismiss();
         print('print me inside tailor squad');
         showToast(this._context, message: success.message);
 
@@ -43,13 +43,13 @@ class CompleteTailorAccountProvider extends ChangeNotifier {
 
         notifyListeners();
       }, failure: (NetworkExceptions error, _, statusMessage) {
-        _progressIndicator.dismiss();
+         _progressIndicator.dismiss();
         showToast(this._context,
             message: NetworkExceptions.getErrorMessage(error));
       });
       notifyListeners();
     } catch (e) {
-      await _progressIndicator.dismiss();
+       await _progressIndicator.dismiss();
       notifyListeners();
       print('print catch error here');
       showToast(this._context, message: 'Failed.. Please try again');

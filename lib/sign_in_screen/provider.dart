@@ -15,10 +15,10 @@ class SignInProvider extends ChangeNotifier {
     this._context = context;
   }
 
-  void loginUser({String email,String password}) async {
+  void loginUser({@required Map map}) async {
     try {
       print('whatever');
-      final _response = await _repository.loginUser(email: email,password: password);
+      final _response = await _repository.loginUser(map: map);
       print('printing ${_response.toString()}');
       _response.when(success: (success, _, statusMessage) async {
         print('whatever again');

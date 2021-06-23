@@ -39,8 +39,8 @@ class _OtpPageState extends State<OtpPage> {
   }
 
   init()async{
-    ref = constantRef;
     token = await preferencesHelper.getStringValues(key: 'token');
+    ref = constantRef;
   }
 
   @override
@@ -50,6 +50,7 @@ class _OtpPageState extends State<OtpPage> {
 
   @override
   Widget build(BuildContext context) {
+    print('printing token: $token');
     return Scaffold(
       backgroundColor: AppColor.white,
       appBar: AppBar(

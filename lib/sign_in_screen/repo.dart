@@ -11,14 +11,14 @@ import 'model.dart';
 
 
 class LoginApiRepository {
-  Future<dynamic> loginUser({String email,String password}) async {
-    final map={
-      "email":email,
-      "password":password
-    };
+  Future<dynamic> loginUser({@required Map map}) async {
+    // final map={
+    //   "email":email,
+    //   "password":password
+    // };
     try {
       print('running');
-      print('Print $email and $password');
+      // print('Print $email and $password');
       final _response =
       await networkClient.makePostRequest('login', data: map);
       print('print response: $_response');
