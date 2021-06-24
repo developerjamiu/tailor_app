@@ -1,12 +1,9 @@
-import 'package:flushbar/flushbar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tailor_app/sign_in_screen/provider.dart';
 import 'package:tailor_app/utils/colors.dart';
 import 'package:tailor_app/utils/helper/helper.dart';
-import 'package:tailor_app/utils/page_route/route.dart';
-import 'package:tailor_app/utils/user_provider.dart';
 import 'package:tailor_app/widget/text_field_editing_widget.dart';
 import 'package:tailor_app/widget/text_view_widget.dart';
 
@@ -112,10 +109,7 @@ class _SignInScreenState extends State<SignInScreen> {
               SizedBox(height: 35,),
               Center(
                 child: ElevatedButton(
-                  onPressed: (){
-                    print('you press meee');
-                      signIn();
-                    },
+                  onPressed: ()=>signIn(),
                   style: TextButton
                       .styleFrom(
                     backgroundColor:

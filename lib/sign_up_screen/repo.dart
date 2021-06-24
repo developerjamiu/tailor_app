@@ -1,6 +1,3 @@
-
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:jaynetwork/network/api_result.dart';
 import 'package:tailor_app/error_handler/handler.dart';
@@ -18,9 +15,10 @@ class SignUpApiRepository {
       print('print:$_response');
       final _finalData = SignUpModel.fromJson(_response.data);
       preferencesHelper.saveValue(key: 'token', value: _finalData.user.accessToken);
-     return ApiResponse.success(statusMessage: _response.statusMessage,
-          data: _finalData,
-          statusCode: _response.statusCode);
+     return ApiResponse.success(
+        statusMessage: _response.statusMessage,
+        data: _finalData,
+        statusCode: _response.statusCode);
     } catch (e) {
       return handleNetworkException(e);
     }

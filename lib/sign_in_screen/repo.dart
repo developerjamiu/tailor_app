@@ -1,21 +1,12 @@
-import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
 import 'package:jaynetwork/network/api_result.dart';
-import 'package:jaynetwork/network/network_exceptions.dart';
 import 'package:tailor_app/error_handler/handler.dart';
 import 'package:tailor_app/instance_helper/instances.dart';
-import 'package:tailor_app/sign_up_screen/model.dart';
-
 import 'model.dart';
 
 
 class LoginApiRepository {
   Future<dynamic> loginUser({@required Map map}) async {
-    // final map={
-    //   "email":email,
-    //   "password":password
-    // };
     try {
       print('running');
       // print('Print $email and $password');

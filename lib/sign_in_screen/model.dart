@@ -151,10 +151,13 @@ import 'package:flutter/cupertino.dart';
 
 class LoginModel {
   Details details;
+  String email,password;
 
-  LoginModel({this.details});
+  LoginModel({this.details,this.email,this.password});
 
   LoginModel.fromJson(Map<String, dynamic> json) {
+    email = json ['email'];
+    password = json['password'];
     details =
     json['details'] != null ? new Details.fromJson(json['details']) : null;
   }
