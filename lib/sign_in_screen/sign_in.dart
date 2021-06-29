@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tailor_app/sign_in_screen/provider.dart';
 import 'package:tailor_app/utils/colors.dart';
 import 'package:tailor_app/utils/helper/helper.dart';
+import 'package:tailor_app/utils/page_route/navigator.dart';
 import 'package:tailor_app/widget/text_field_editing_widget.dart';
 import 'package:tailor_app/widget/text_view_widget.dart';
 
@@ -55,11 +57,12 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   void signIn() {
+    FocusScope.of(context).unfocus();
     if (_validateInput())
       signInProvider.loginUser(
-          map: LoginModel.toLoginJson(
-              email: emailController.text,
-              password: passwordController.text));
+          map: LoginModel.toJson(
+              email: emailController.text.trim(),
+              password: passwordController.text.trim()));
   }
 
   @override
@@ -70,7 +73,7 @@ class _SignInScreenState extends State<SignInScreen> {
           padding: EdgeInsets.only(left: 16,right: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children:[
               SizedBox(height: 60,),
               TextViewWidget(
@@ -98,12 +101,15 @@ class _SignInScreenState extends State<SignInScreen> {
                 alignment: Alignment.bottomRight,
                 child: Padding(
                   padding: const EdgeInsets.only(right:16),
-                  child: TextViewWidget(
-                      text: 'Forgot Password',
-                      textAlign: TextAlign.right,
-                      color: AppColor.black,
-                      fontWeight: FontWeight.w500,
-                      textSize: 18),
+                  child: InkWell(
+                    onTap: ()=>PageRouter.gotoNamed(Routes.DASHBOARD, context),
+                    child: TextViewWidget(
+                        text: 'Forgot Password',
+                        textAlign: TextAlign.right,
+                        color: AppColor.black,
+                        fontWeight: FontWeight.w500,
+                        textSize: 18),
+                  ),
                 ),
               ),
               SizedBox(height: 35,),
@@ -126,17 +132,30 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 35,),
+              SizedBox(height: 50,),
               Center(
-                child: InkWell(
-                  onTap: (){},
-                  child: TextViewWidget(
-                    text: 'Not a Member? -->',
-                    color: AppColor.black,
-                    fontWeight: FontWeight.w600,
-                    textSize: 22,),
+                child: Text.rich(
+                  TextSpan(
+                    text: 'Not a Member?--> ',
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: AppColor.black,
+                        fontWeight: FontWeight.w500),
+                    children: <TextSpan>[
+                      TextSpan(
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () =>
+                              PageRouter.gotoNamed(Routes.SIGNUP, context),
+                        text: 'Sign up',
+                        style: TextStyle(
+                            fontSize: 20,
+                            color: AppColor.purple,
+                            fontWeight: FontWeight.w800),
+                      ),
+                    ],
+                  ),
                 ),
-              )
+              ),
             ]
           ),
         ),

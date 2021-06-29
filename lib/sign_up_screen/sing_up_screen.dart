@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tailor_app/instance_helper/instances.dart';
@@ -6,6 +7,8 @@ import 'package:tailor_app/sign_up_screen/provider.dart';
 import 'package:tailor_app/utils/colors.dart';
 import 'package:tailor_app/utils/helper/constants.dart';
 import 'package:tailor_app/utils/helper/helper.dart';
+import 'package:tailor_app/utils/page_route/navigator.dart';
+import 'package:tailor_app/utils/page_route/route.dart';
 import 'package:tailor_app/widget/text_field_editing_widget.dart';
 import 'package:tailor_app/widget/text_view_widget.dart';
 
@@ -161,10 +164,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
           padding: const EdgeInsets.only(left: 16,right: 16,),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(height: 40,),
               TextViewWidget(
-                text: 'Sign Up',
+                text: 'Sign In',
                 textSize: 30,
                 color: AppColor.black,
                 fontWeight: FontWeight.w600,),
@@ -297,17 +301,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
               ),
-              SizedBox(height: 35,),
+              SizedBox(height: 30,),
               Center(
-                child: InkWell(
-                  onTap: (){},
-                  child: TextViewWidget(
-                      text: 'Already have an account? -->',
-                      color: AppColor.black,
-                      fontWeight: FontWeight.w600,
-                      textSize: 22,),
+                child: Text.rich(
+                  TextSpan(
+                    text: 'Already have an account? --> ',
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: AppColor.black,
+                        fontWeight: FontWeight.w500),
+                    children: <TextSpan>[
+                      TextSpan(
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () =>
+                              PageRouter.gotoNamed(Routes.LOGIN, context),
+                        text: 'Sign In',
+                        style: TextStyle(
+                            fontSize: 21,
+                            color: AppColor.purple,
+                            fontWeight: FontWeight.w800),
+                      ),
+                    ],
+                  ),
                 ),
-              )
+              ),
             ],
           ),
         ),

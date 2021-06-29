@@ -5,7 +5,7 @@ import 'package:tailor_app/sign_in_screen/repo.dart';
 import 'package:tailor_app/utils/page_route/navigator.dart';
 import 'package:tailor_app/widget/progress.dart';
 
-LoginApiRepository _repository = LoginApiRepository();
+LoginApiRepository _loginRepository = LoginApiRepository();
 
 class SignInProvider extends ChangeNotifier {
   BuildContext _context;
@@ -13,32 +13,28 @@ class SignInProvider extends ChangeNotifier {
   String errorMsg='Login Failed';
   CustomProgressIndicator _progressIndicator;
 
-
   void initialize(BuildContext context) {
     this._context = context;
     this._progressIndicator = CustomProgressIndicator(this._context);
-
   }
 
   void loginUser({@required Map map}) async {
     try {
       _progressIndicator.show();
-      print('whatever');
-      final _response = await _repository.loginUser(map: map);
-      print('printing ${_response.toString()}');
+      final _response = await _loginRepository.loginUser(map: map);
+      print('printing first response: $_response');
       _response.when(success: (success, _, statusMessage) async {
+        print('printing second response: $_response');
         await _progressIndicator.dismiss();
-        print('whatever again');
         showToast(this._context, message: 'Login Successful.');
         PageRouter.gotoNamed(Routes.DASHBOARD, _context);
         notifyListeners();
       }, failure: (NetworkExceptions error, int statusCode,
           String statusMessage) async {
-        print('oshodu');
         await _progressIndicator.dismiss();
-        notifyListeners();
+        print('printing response error: $_response');
         showToast(
-            this._context, message: error.toString());
+            this._context, message: NetworkExceptions.getErrorMessage(error));
         notifyListeners();
       });
     } catch (e) {

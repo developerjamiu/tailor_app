@@ -1,7 +1,17 @@
+import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:tailor_app/instance_helper/instances.dart';
 import 'package:tailor_app/utils/colors.dart';
 import 'package:tailor_app/widget/text_view_widget.dart';
+import 'package:provider/provider.dart';
+import 'package:tailor_app/tailor_category/upload_image/provider.dart';
+import 'package:tailor_app/tailor_category/upload_image/model.dart';
+
+import 'category_model/model.dart';
+import 'category_model/provider.dart';
+
 
 class TailorCategory extends StatefulWidget {
   const TailorCategory({Key key}) : super(key: key);
@@ -12,13 +22,127 @@ class TailorCategory extends StatefulWidget {
 
 class _TailorCategoryState extends State<TailorCategory> {
 
+  TailorCategoryProvider tailorCategoryProvider;
+  CategoryModel categoryModel;
+
+
   bool iconBarTraditionalWears = false;
   bool iconBarEnglishWears = false;
   bool iconBarMaterial = false;
+  UploadImageProvider uploadImageProvider;
+
+  File imageFile;
+  File picture;
+  var imageString;
+  String token,loginToken;
+
+  Future getImage(BuildContext context, bool isCamera) async {
+    if (isCamera) {
+      var picture = await ImagePicker().getImage(source: ImageSource.camera);
+      if (picture != null && picture.path.isNotEmpty && picture.path != null) {
+        setState(() {
+          imageFile = File(picture.path);
+          imageString = imageFile.path.split("/").last;
+        });
+        uploadImage();
+      }
+    } else {
+      var picture = await ImagePicker().getImage(source: ImageSource.gallery);
+      if (picture != null && picture.path.isNotEmpty && picture.path != null) {
+        setState(() {
+          imageFile = File(picture.path);
+          imageString = imageFile.path.split("/").last;
+        });
+        uploadImage();
+      }
+    }
+  }
+
+  Future<void> _showDialog(BuildContext parentContext) {
+    return showDialog(
+        context: parentContext,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: SingleChildScrollView(
+              child: ListBody(
+                children: [
+                  GestureDetector(
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(0, 0, 8, 8),
+                      child: TextViewWidget(
+                        text: 'Camera',
+                        color: AppColor.black,
+                        textSize: 18,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      getImage(parentContext, true);
+                    },
+                  ),
+                  GestureDetector(
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(0, 8, 8, 0),
+                      child: TextViewWidget(
+                        text: 'Gallery',
+                        color: AppColor.black,
+                        textSize: 18,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      getImage(parentContext, false);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  void uploadImage()async{
+    var map = await UploadImageModel.uploadImageToMap(image: imageFile);
+    uploadImageProvider.uploadImage(
+        imageData: map,
+        token: token);
+  }
+
+  void tailorCategory(){
+    tailorCategoryProvider.tailorCategoryP(
+        token: loginToken);
+  }
+
+  @override
+  void initState() {
+    uploadImageProvider = Provider.of<UploadImageProvider>(context,listen:false);
+    uploadImageProvider.init(context);
+    tailorCategoryProvider = Provider.of<TailorCategoryProvider>(context,listen:false);
+    tailorCategoryProvider.init(context);
+
+    init();
+    super.initState();
+  }
+
+  init() async {
+    token = await preferencesHelper.getStringValues(key: 'token');
+    loginToken = await preferencesHelper.getStringValues(key: 'login_token');
+    // tailorCategoryProvider.tailorCategoryP(token:token);
+  }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 2,
+        leading: IconButton(
+          color:AppColor.textColor,
+          icon: Icon(Icons.storage),
+          onPressed: ()async=> await _showDialog(context),
+      ),
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.only(left:8.0,right:8.0),
@@ -127,6 +251,24 @@ class _TailorCategoryState extends State<TailorCategory> {
                 ),
               ),
               iconBarMaterial==false?Container():imageContainer(),
+              SizedBox(height:75),
+              ElevatedButton(
+                onPressed: ()=> tailorCategory(),
+                style: TextButton.styleFrom(
+                  backgroundColor: AppColor.purple,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(12.0),
+                  child: TextViewWidget(
+                    text: 'Category',
+                    color: AppColor.white,
+                    textSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              // TextViewWidget(text:,textSize:16,color:AppColor.black)
+
             ],
           ),
         ),

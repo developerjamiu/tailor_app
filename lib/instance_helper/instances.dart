@@ -8,6 +8,10 @@ final JayNetworkClient networkClient =
 JayNetworkClient('https://sizary.app/api/auth/',
     interceptors: addPredefinedInterceptor());
 
+final JayNetworkClient tailorNetworkClient =
+JayNetworkClient('https://sizary.app/api/tailor/',
+    interceptors: addPredefinedInterceptor());
+
 final SharedPreferencesHelper preferencesHelper = SharedPreferencesHelper();
 
 void showToast(BuildContext context,
