@@ -38,7 +38,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   bool _isFirstName = false;
   bool _isLastName = false;
-  bool _isEmail = false;  List accountType = ['tailor','client'];
+  bool _isEmail = false;
+  List accountType = ['tailor','client'];
 
   bool _isPhone = false;
   bool _isPassword = false;
@@ -119,31 +120,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     signUpProviders.init(context);
     super.initState();
   }
-
-  // doRegister() {
-  //   if (!_validateInputs()) return;
-  //     signUpProviders.register(emailController.text,
-  //         passwordController.text,
-  //         confirmPasswordController.text,
-  //         firstNameController.text, lastNameController.text,
-  //         countryValue, accountTypeValue, phoneController.text).then((response) {
-  //       if (response != null) {
-  //         SignUpModel user = response[''];
-  //         Provider.of<UserSignUpProvider>(context, listen: false).setSignUpUser(user);
-  //       Navigator.of(context).pushReplacementNamed(Routes.DASHBOARD);
-  //         print("printing token:${signUpProviders.chill}");
-  //
-  //       } else {
-  //         Flushbar(
-  //           title: "Registration Failed",
-  //           message: 'failed',
-  //           duration: Duration(seconds: 10),
-  //         ).show(context);
-  //       }
-  //     });
-  //
-  // }
-
 
   @override
   void dispose() {
@@ -273,7 +249,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 isValidationError: _isPassword,
                 textCallBack: (_) => setState(() => _isPassword = false),),
               EditTextWidget(
-                  err: 'please enter thame password',
+                  err: 'please enter password',
                   label: 'Confirm Password',
                   textInputType: TextInputType.text,
                   controller: confirmPasswordController,

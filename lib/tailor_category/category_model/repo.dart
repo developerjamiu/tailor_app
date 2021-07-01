@@ -1,38 +1,36 @@
-
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:jaynetwork/network/api_result.dart';
 import 'package:tailor_app/error_handler/handler.dart';
 import 'package:tailor_app/instance_helper/instances.dart';
-
 import 'model.dart';
 
 class TailorCategoryRepo{
+  Future<dynamic> tailorCategoryRepo(
+      {@required String queryToken}) async{
 
-  CategoryModel categoryModel;
-  TailorCategoryRepo({this.categoryModel});
-
-  Future<ApiResponse<dynamic>> tailorCategory({@required String queryToken})
-  async{
-
+    List<Category> categoryList = [];
     try {
-      print('printing token on category $queryToken');
-      final response = await tailorNetworkClient.makeGetRequest(
-          "category?token=$queryToken");
-      print('printing boomba $response');
-      final decodedData = jsonDecode(response.data);
-      final _finalData = CategoryModel.fromJson(response.data);
-      print('printing final data $_finalData');
-      // print("printing the final data:${_finalData.category}");
 
-      // categoryModel =_finalData;
-      return ApiResponse.success(
-          statusCode: response.statusCode,
-          data: _finalData,
-          statusMessage: response.statusMessage);
+      final response =
+      await tailorNetworkClient.makeGetRequest('category?token=$queryToken');
+      String responseString = response.toString();
+      var decodedData = jsonDecode(responseString);
+      List<dynamic> mapUser = decodedData['category'];
+      categoryList.clear();
+      for (int i = 0; i < mapUser.length; i++) {
+        Category category = Category(
+          categoryName: mapUser[i]['category_name'],
+          image: mapUser[i]['image']
+        );
+        categoryList.add(category);
+      }
+      return categoryList;
     } catch (e) {
       return handleNetworkException(e);
     }
   }
+
+
 }

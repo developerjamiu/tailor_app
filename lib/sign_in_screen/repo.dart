@@ -11,7 +11,6 @@ class LoginApiRepository {
   Future<dynamic> loginUser({@required Map map}) async {
     try {
       print('running');
-      // print('Print $email and $password');
       final _response =
       await networkClient.makePostRequest('login', data: map);
       print('print responses: $_response');

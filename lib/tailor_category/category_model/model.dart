@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-
 class CategoryModel {
   List<Category> category;
 
@@ -26,12 +24,12 @@ class CategoryModel {
 
 class Category {
   String categoryName;
-  List<Null> image;
+  List image;
 
   Category({this.categoryName, this.image});
 
   Category.fromJson(Map<String, dynamic> json) {
-    categoryName = json['category_name'];
+    categoryName = json['category_name'] == null ? null : json['category_name'];
     if (json['image'] != null) {
       image = [];
       json['image'].forEach((v) {
