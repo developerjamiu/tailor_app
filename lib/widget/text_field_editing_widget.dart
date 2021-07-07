@@ -93,6 +93,7 @@ class EditTextWidget extends StatelessWidget {
           height: 9,
         ),
         Container(
+          width: MediaQuery.of(context).size.width,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
@@ -119,18 +120,18 @@ class EditTextWidget extends StatelessWidget {
                     decoration: InputDecoration(
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(color: AppColor.black),
+                          borderSide: BorderSide(color: color==null?AppColor.black:AppColor.white),
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(color: AppColor.black),
+                          borderSide: BorderSide(color: color==null?AppColor.black:AppColor.white),
                         ),
                         border: new OutlineInputBorder(
                           borderRadius: BorderRadius.circular(10.0),
-                          borderSide: BorderSide(color: AppColor.black),
+                          borderSide: BorderSide(color: color==null?AppColor.black:AppColor.white),
                         ),
                         labelText: label,
-                        labelStyle: TextStyle(color: AppColor.textColor),
+                        labelStyle: TextStyle(color: color==null?AppColor.textColor:AppColor.white),
                         errorText: isValidationError?err:null,
                         suffixIcon: Icon(
                           suffixIcon,

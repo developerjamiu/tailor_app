@@ -224,13 +224,18 @@ class _TailorDashBoardState extends State<TailorDashBoard> {
         padding: const EdgeInsets.all(2.0),
         child: Column(
           children: [
-            SvgPicture.asset(
-              svg,
-              color: color,),
+            SizedBox(height: 6,),
+            Container(
+              height: 52,
+              width: 53,
+              child: SvgPicture.asset(
+                svg,
+                color: color,),
+            ),
             Expanded(
               child: TextViewWidget(
                   text: text,
-                  textSize: 18,
+                  textSize: 16,
                   color: AppColor.black),
             )
           ],

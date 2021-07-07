@@ -30,24 +30,12 @@ class SlideScreen extends StatelessWidget {
       body: Stack(
       children: [
         Container(
-          height: 600,
+          // height: MediaQuery.of(context).size.height,
           decoration: new BoxDecoration(
               image: new DecorationImage(
                 image: new AssetImage(image),
                 fit: BoxFit.fill,
               )
-          ),
-        ),
-
-        Center(
-          child: DotsIndicator(
-            dotsCount: pageLength,
-            position: double.parse(currentIndexPage.toString()),
-            decorator: DotsDecorator(
-                color: AppColor.white,
-                activeColor: AppColor.purple,
-                size: Size.square(8.0),
-                activeSize: Size.square(8.0)),
           ),
         ),
         Positioned(
@@ -56,11 +44,23 @@ class SlideScreen extends StatelessWidget {
         ),
 
         Positioned(
-          bottom: 100,
+          bottom: 70,
           child: Center(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                Center(
+                  child: DotsIndicator(
+                    dotsCount: pageLength,
+                    position: double.parse(currentIndexPage.toString()),
+                    decorator: DotsDecorator(
+                        color: AppColor.white,
+                        activeColor: AppColor.purple,
+                        size: Size.square(8.0),
+                        activeSize: Size.square(8.0)),
+                  ),
+                ),
+                SizedBox(height: 20,),
                 TextViewWidget(
                   textAlign: TextAlign.center,
                   text: text1,

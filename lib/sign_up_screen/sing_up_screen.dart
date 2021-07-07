@@ -144,7 +144,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
             children: [
               SizedBox(height: 40,),
               TextViewWidget(
-                text: 'Sign In',
+                text: 'Sign Up',
                 textSize: 30,
                 color: AppColor.black,
                 fontWeight: FontWeight.w600,),
