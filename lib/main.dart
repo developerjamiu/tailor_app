@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:tailor_app/sign_in_screen/sign_in.dart';
+import 'package:tailor_app/splashscreen/splashscreen.dart';
 import 'package:tailor_app/utils/colors.dart';
 import 'package:tailor_app/utils/page_route/navigator.dart';
 import 'package:tailor_app/utils/providers/provider.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(statusBarColor: AppColor.white));
+      SystemUiOverlayStyle(statusBarColor: AppColor.purple));
   runApp(MyApp());
 }
 
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.purple,
         ),
         debugShowCheckedModeBanner: false,
-        home: SignInScreen(),
+        home: SplashScreen(),
         routes: Routes.getRoutes,
       ),
     );

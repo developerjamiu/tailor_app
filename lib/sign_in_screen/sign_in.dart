@@ -69,94 +69,109 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.only(left: 16,right: 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children:[
-              SizedBox(height: 60,),
-              TextViewWidget(
-                text: 'Sign In',
-                textSize: 30,
-                color: AppColor.black,
-                fontWeight: FontWeight.w600,),
-              SizedBox(height: 150),
-              EditTextWidget(
-                err: 'please enter email address',
-                label: 'Email',
-                textInputType: TextInputType.text,
-                controller: emailController,
-                isValidationError: _isEmail,
-                textCallBack: (_) => setState(() => _isEmail = false),),
-              EditTextWidget(
-                err: 'please enter password',
-                label: 'Password',
-                textInputType: TextInputType.text,
-                controller: passwordController,
-                isValidationError: _isPassword,
-                textCallBack: (_) => setState(() => _isPassword = false),),
-              SizedBox(height: 10,),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Padding(
-                  padding: const EdgeInsets.only(right:16),
-                  child: InkWell(
-                    onTap: ()=>PageRouter.gotoNamed(Routes.DASHBOARD, context),
-                    child: TextViewWidget(
-                        text: 'Forgot Password',
-                        textAlign: TextAlign.right,
-                        color: AppColor.black,
-                        fontWeight: FontWeight.w500,
-                        textSize: 18),
-                  ),
+        child: Container(
+          height: MediaQuery.of(context).size.height,
+            decoration: new BoxDecoration(
+              color: AppColor.black,
+              image: new DecorationImage(
+                fit: BoxFit.cover,
+                colorFilter: new ColorFilter.mode(
+                    AppColor.black.withOpacity(0.7), BlendMode.dstATop),
+                image: new AssetImage(
+                  'assets/authentication.png',
                 ),
               ),
-              SizedBox(height: 35,),
-              Center(
-                child: ElevatedButton(
-                  onPressed: ()=>signIn(),
-                  style: TextButton
-                      .styleFrom(
-                    backgroundColor:
-                    AppColor.purple,
-                  ),
+            ),
+          child: Padding(
+            padding: EdgeInsets.only(left: 16,right: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children:[
+                SizedBox(height: 60,),
+                TextViewWidget(
+                  text: 'Sign In',
+                  textSize: 30,
+                  color: AppColor.black,
+                  fontWeight: FontWeight.w600,),
+                SizedBox(height: 150),
+                EditTextWidget(
+                  err: 'please enter email address',
+                  label: 'Email',
+                  textInputType: TextInputType.text,
+                  controller: emailController,
+                  isValidationError: _isEmail,
+                  textCallBack: (_) => setState(() => _isEmail = false),),
+                EditTextWidget(
+                  err: 'please enter password',
+                  label: 'Password',
+                  textInputType: TextInputType.text,
+                  controller: passwordController,
+                  isValidationError: _isPassword,
+                  textCallBack: (_) => setState(() => _isPassword = false),),
+                SizedBox(height: 10,),
+                Align(
+                  alignment: Alignment.bottomRight,
                   child: Padding(
-                    padding: const EdgeInsets.all(12.0),
-                    child: TextViewWidget(
-                      text: 'Sign In',
-                      color: AppColor.white,
-                      textSize: 20,
-                      fontWeight: FontWeight.w600,
+                    padding: const EdgeInsets.only(right:16),
+                    child: InkWell(
+                      onTap: (){},
+                      child: TextViewWidget(
+                          text: 'Forgot Password',
+                          textAlign: TextAlign.right,
+                          color: AppColor.black,
+                          fontWeight: FontWeight.w500,
+                          textSize: 18),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(height: 50,),
-              Center(
-                child: Text.rich(
-                  TextSpan(
-                    text: 'Not a Member?--> ',
-                    style: TextStyle(
-                        fontSize: 20,
-                        color: AppColor.black,
-                        fontWeight: FontWeight.w500),
-                    children: <TextSpan>[
-                      TextSpan(
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () =>
-                              PageRouter.gotoNamed(Routes.SIGNUP, context),
-                        text: 'Sign up',
-                        style: TextStyle(
-                            fontSize: 20,
-                            color: AppColor.purple,
-                            fontWeight: FontWeight.w800),
+                SizedBox(height: 35,),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: ()=>signIn(),
+                    style: TextButton
+                        .styleFrom(
+                      backgroundColor:
+                      AppColor.purple,
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: TextViewWidget(
+                        text: 'Sign In',
+                        color: AppColor.white,
+                        textSize: 20,
+                        fontWeight: FontWeight.w600,
                       ),
-                    ],
+                    ),
                   ),
                 ),
-              ),
-            ]
+                SizedBox(height: 50,),
+                Center(
+                  child: Text.rich(
+                    TextSpan(
+                      text: 'Not a Member?--> ',
+                      style: TextStyle(
+                          fontSize: 20,
+                          color: AppColor.black,
+                          fontWeight: FontWeight.w500),
+                      children: <TextSpan>[
+                        TextSpan(
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () =>
+                                PageRouter.gotoNamed(Routes.SIGN_UP, context),
+                          text: 'Sign up',
+                          style: TextStyle(
+                              fontSize: 20,
+                              color: AppColor.purple,
+                              fontWeight: FontWeight.w800),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 50,),
+              ]
+            ),
           ),
         ),
       ),

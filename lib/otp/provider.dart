@@ -1,9 +1,7 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:jaynetwork/network/network_exceptions.dart';
 import 'package:tailor_app/instance_helper/instances.dart';
 import 'package:tailor_app/otp/repo.dart';
-import 'package:tailor_app/sign_up_screen/model.dart';
 import 'package:tailor_app/utils/helper/timer_helper.dart';
 import 'package:tailor_app/utils/page_route/navigator.dart';
 import 'package:tailor_app/utils/page_route/route.dart';
@@ -35,7 +33,7 @@ class OtpProviders extends ChangeNotifier {
         String _prefType = await preferencesHelper.getStringValues(key: 'type');
         print('printing account type here $_prefType');
         if(_prefType != null && _prefType == 'client')
-          PageRouter.gotoNamed(Routes.DASHBOARD, _context);
+          PageRouter.gotoNamed(Routes.CLIENT_DASHBOARD_SCREEN, _context);
         else
         PageRouter.gotoNamed(Routes.TAILOR_OTP_SUCCESSFUL, _context);
         notifyListeners();
@@ -60,7 +58,13 @@ class OtpProviders extends ChangeNotifier {
         showToast(this._context, message: success.message);
         print('resend successful');
         utilityProvider.startTimer(timeLimit: 4);
-        PageRouter.gotoNamed(Routes.DASHBOARD, _context);
+        String _prefType = await preferencesHelper.getStringValues(key: 'type');
+        print('printing account type here $_prefType');
+        if(_prefType != null && _prefType == 'client')
+          // PageRouter.gotoNamed(Routes.CLIENT_DASHBOARD, _context);
+          showToast(this._context, message: 'success buh no screen for now');
+        else
+          PageRouter.gotoNamed(Routes.TAILOR_OTP_SUCCESSFUL, _context);
         notifyListeners();
       }, failure: (NetworkExceptions error, _, statusMessage) {
         _progressIndicator.dismiss();

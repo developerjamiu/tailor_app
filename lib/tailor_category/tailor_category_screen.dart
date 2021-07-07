@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:tailor_app/instance_helper/instances.dart';
 import 'package:tailor_app/utils/colors.dart';
+import 'package:tailor_app/utils/page_route/navigator.dart';
 import 'package:tailor_app/widget/text_field_editing_widget.dart';
 import 'package:tailor_app/widget/text_view_widget.dart';
 import 'package:provider/provider.dart';
@@ -160,6 +161,19 @@ class _TailorCategoryState extends State<TailorCategory> {
                       Navigator.pop(context);
                       _showAddCategoryDialog(parentContext);
                     },
+                  ),
+                  GestureDetector(
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(0, 8, 8, 0),
+                      child: TextViewWidget(
+                        text: 'Customers Screen',
+                        color: AppColor.black,
+                        textSize: 18,
+                      ),
+                    ),
+                    onTap: ()=>
+                        PageRouter.gotoNamed(
+                            Routes.TAILOR_DASHBOARD_SCREEN, context),
                   ),
                 ],
               ),

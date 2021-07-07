@@ -12,4 +12,5 @@ class AppColor {
   static const Color purple = Color(0xff5C5398);
   static final Color grey = Colors.grey[900];
   static final Color topGreen = Color(0xff00BE94);
+  static final Color brown = Color(0xffB07C29);
 }

@@ -27,7 +27,12 @@ class SignInProvider extends ChangeNotifier {
         print('printing second response: $_response');
         await _progressIndicator.dismiss();
         showToast(this._context, message: 'Login Successful.');
-        PageRouter.gotoNamed(Routes.DASHBOARD, _context);
+        String _prefType = await preferencesHelper.getStringValues(key: 'login_type');
+        print('printing account type here $_prefType');
+        if(_prefType != null && _prefType == 'client')
+          PageRouter.gotoNamed(Routes.CLIENT_DASHBOARD_SCREEN, _context);
+        else
+          PageRouter.gotoNamed(Routes.TAILOR_DASHBOARD_SCREEN, _context);
         notifyListeners();
       }, failure: (NetworkExceptions error, int statusCode,
           String statusMessage) async {

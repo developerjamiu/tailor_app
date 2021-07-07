@@ -21,6 +21,7 @@ class LoginApiRepository {
       preferencesHelper.saveValue(key: 'email', value: _finalData.details.user.email);
       preferencesHelper.saveValue(key: 'verified', value: _finalData.details.user.verified);
       preferencesHelper.saveValue(key: 'login_token', value: _finalData.details.accessToken);
+      preferencesHelper.saveValue(key: 'login_type', value: _finalData.details.user.type);
       print('printing m..f..ing ${_finalData.details.user.firstname}');
       print('printing m..f..ing ${_finalData.details.user.email}');
       print('printing m..f..ing ${_finalData.details.accessToken} token');

@@ -31,6 +31,4 @@ class TailorCategoryRepo{
       return handleNetworkException(e);
     }
   }
-
-
 }

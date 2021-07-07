@@ -7,7 +7,6 @@ import 'package:tailor_app/instance_helper/instances.dart';
 import 'package:tailor_app/utils/page_route/navigator.dart';
 import 'package:tailor_app/utils/page_route/route.dart';
 import 'package:tailor_app/widget/progress.dart';
-import 'dart:io';
 
 CompleteTailorRepo _completeTailorRepo = CompleteTailorRepo();
 
@@ -38,9 +37,7 @@ class CompleteTailorAccountProvider extends ChangeNotifier {
         await _progressIndicator.dismiss();
         print('print me inside tailor squad');
         showToast(this._context, message: success.message);
-
-        PageRouter.gotoNamed(Routes.DASHBOARD, _context);
-
+        PageRouter.gotoNamed(Routes.TAILOR_DASHBOARD_SCREEN, _context);
         notifyListeners();
       }, failure: (NetworkExceptions error, _, statusMessage) {
          _progressIndicator.dismiss();
