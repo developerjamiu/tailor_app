@@ -69,7 +69,7 @@ class SlideScreen extends StatelessWidget {
                   fontWeight: FontWeight.bold,),
                 SizedBox(height: 15,),
                 Padding(
-                  padding: const EdgeInsets.only(left:12.0,right: 12.0),
+                  padding: const EdgeInsets.only(left:10.0,right: 25.0),
                   child: TextViewWidget(
                     textAlign: TextAlign.center,
                     text: text2,

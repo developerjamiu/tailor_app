@@ -38,6 +38,7 @@ class EditTextWidget extends StatelessWidget {
   Widget imageIcon;
   final Color color;
   final InputDecoration decoration;
+  final bool paddedSide;
 
   EditTextWidget({
     @required this.controller,
@@ -72,7 +73,7 @@ class EditTextWidget extends StatelessWidget {
     this.suffixIcon,
     this.imageIcon,
     this.color,
-    this.decoration,
+    this.decoration, this.paddedSide,
   });
 
   @override
@@ -94,8 +95,8 @@ class EditTextWidget extends StatelessWidget {
         ),
         Container(
           width: MediaQuery.of(context).size.width,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: paddedSide==true?Padding(
+            padding: const EdgeInsets.only(left: 32,right: 32),
             child: Row(
               children: <Widget>[
                 Flexible(
@@ -106,13 +107,15 @@ class EditTextWidget extends StatelessWidget {
                     controller: controller,
                     onTap: onTap,
                     focusNode: focusNode,
-                    cursorColor: AppColor.black,
+                    cursorColor: color==null?AppColor.black:AppColor.white,
                     // ignore: missing_return
                     validator: validator,
                     onSaved: saved,
                     textAlign: textAlign,
                     style: TextStyle(
-                        fontSize: fontSize, fontWeight: FontWeight.w600),
+                        fontSize: fontSize,
+                        fontWeight: FontWeight.w600,
+                        color: color==null?AppColor.black:AppColor.white),
                     obscureText: obsecure,
                     // enabled: isEnabled,
                     keyboardType: textInputType,
@@ -160,7 +163,73 @@ class EditTextWidget extends StatelessWidget {
                 ),
               ],
             ),
-          ),
+          ):Padding(padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      children: <Widget>[
+                        Flexible(
+                          child: TextFormField(
+                            readOnly: readOnly,
+                            onChanged: textCallBack,
+                            maxLength: maxLength,
+                            controller: controller,
+                            onTap: onTap,
+                            focusNode: focusNode,
+                            cursorColor: color==null?AppColor.black:AppColor.white,
+                            // ignore: missing_return
+                            validator: validator,
+                            onSaved: saved,
+                            textAlign: textAlign,
+                            style: TextStyle(
+                                fontSize: fontSize,
+                                fontWeight: FontWeight.w600,
+                                color: color==null?AppColor.black:AppColor.white),
+                            obscureText: obsecure,
+                            // enabled: isEnabled,
+                            keyboardType: textInputType,
+                            inputFormatters: inputFormatters,
+                            decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(color: color==null?AppColor.black:AppColor.white),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(color: color==null?AppColor.black:AppColor.white),
+                                ),
+                                border: new OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10.0),
+                                  borderSide: BorderSide(color: color==null?AppColor.black:AppColor.white),
+                                ),
+                                labelText: label,
+                                labelStyle: TextStyle(color: color==null?AppColor.textColor:AppColor.white),
+                                errorText: isValidationError?err:null,
+                                suffixIcon: Icon(
+                                  suffixIcon,
+                                  color: AppColor.black,
+                                ),
+                                errorStyle: TextStyle(
+                                  color: AppColor.red,
+                                ),
+                                hintText: hint,
+                                hintStyle: TextStyle(
+                                    color: AppColor.white,
+                                    fontSize: fontSize),
+                                counterText: ''),
+                          ),
+                        ),
+                        Visibility(
+                            visible: showIconPicker,
+                            child: IconButton(
+                              color: AppColor.black,
+                              icon: Icon(iconData),
+                              onPressed: iconPickerCallback,
+                            )),
+                        Visibility(
+                          visible: showImageIconPicker,
+                          child: showImageIconPicker ? imageIcon : Container(),
+                        ),
+                      ],
+                    ),),
         ),
         SizedBox(
           height: 10,

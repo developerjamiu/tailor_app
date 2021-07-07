@@ -104,16 +104,17 @@ class _SignInScreenState extends State<SignInScreen> {
           ),
             Positioned(
               bottom: 0,
-              child: SvgPicture.asset('assets/login_rect.svg'),
+              child: SvgPicture.asset('assets/login_rect_svg.svg'),
             ),
 
             Positioned(
-              bottom: 30,
+              bottom: 10,
               child: Center(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     EditTextWidget(
+                      paddedSide: true,
                       color: AppColor.white,
                       err: 'please enter email address',
                       label: 'Email',
@@ -122,6 +123,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       isValidationError: _isEmail,
                       textCallBack: (_) => setState(() => _isEmail = false),),
                     EditTextWidget(
+                      paddedSide: true,
                       color: AppColor.white,
                       err: 'please enter password',
                       label: 'Password',
